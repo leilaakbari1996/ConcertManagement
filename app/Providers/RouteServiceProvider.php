@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Http\Middleware\ApiAuthenticationMiddleware;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Http\Request;
@@ -39,7 +40,10 @@ class RouteServiceProvider extends ServiceProvider
 
         $this->routes(function () {
             Route::prefix('api')
-                ->middleware('api')
+                ->middleware([
+                    'api',
+                   // ApiAuthenticationMiddleware::class
+                    ])
                 ->namespace($this->namespace)
                 ->group(base_path('routes/api.php'));
 
