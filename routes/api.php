@@ -3,9 +3,12 @@
 use App\Http\Controllers\ArtistController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ConcertController;
+use App\Http\Controllers\HallController;
+use App\Http\Controllers\HallSeatController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\SeatClassController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\checkAccessMiddleware;
 use Illuminate\Http\Request;
@@ -32,7 +35,12 @@ Route::get('/concert',[ConcertController::class,'index']);
 Route::get('/categories',[CategoryController::class,'index']);
 
 Route::post('/register',[RegisterController::class,'store']);
+
 Route::post('/login',[LoginController::class,'store']);
+
+Route::get('/seat-class',[SeatClassController::class,'index']);
+
+
 
 Route::middleware('auth:sanctum')->group(function(){
     Route::prefix('/artist')->group(function(){
@@ -63,6 +71,18 @@ Route::middleware('auth:sanctum')->group(function(){
     });
     Route::prefix('concert')->group(function(){
         Route::post('/',[ConcertController::class,'store']);
+        Route::delete('/{concert}',[ConcertController::class,'destroy']);
+    });
+    Route::prefix('hall')->group(function(){
+        Route::get('/',[HallController::class,'index']);
+        Route::post('/',[HallController::class,'store']);
+        Route::get('/{hall}',[HallController::class,'show']);
+        Route::patch('/{hall}',[HallController::class,'update']);
+        Route::delete('/{hall}',[HallController::class,'destroy']);
+
+        Route::get('/{hall}/seats',[HallSeatController::class,'index']);
+        Route::post('/{hall}/seats',[HallSeatController::class,'store']);
+        Route::patch('/{hall}/seats',[HallSeatController::class,'update']);
     });
 });
 

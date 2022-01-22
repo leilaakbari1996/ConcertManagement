@@ -18,7 +18,16 @@ class ConcertController extends Controller
         ])->setStatusCode(200);
     }
     public function store(ConcertRequest $request){
-        dd($request->get('starts_at'),$request->get('ends_at'));
+        $otherconcert = Concert::otherActiveconcert($request);
+
+        if($otherconcert){
+            return response()->json([
+                'data' => [
+                    'msg' => 'This artist already got planes.'
+                ]
+            ])->setStatusCode(400);
+        }
+
         $concert = Concert::query()->create([
             'title' => $request->get('title'),
             'artist_id' => $request->get('artist_id'),
@@ -32,5 +41,13 @@ class ConcertController extends Controller
                 'concert' => new ConcertResource($concert)
             ]
             ])->setStatusCode(201);
+    }
+    public function destroy(Concert $concert){
+        $concert->delete();
+        return response()->json([
+            'data' => [
+                'msg' => 'concert been deleted successfully'
+            ]
+        ])->setStatusCode(200);
     }
 }

@@ -19,7 +19,9 @@ class DatabaseSeeder extends Seeder
             PermissionSeeder::class,
             RoleSeeder::class,
             AdminSeeder::class,
-            ConcertSeeder::class
+            ConcertSeeder::class,
+            seatClassSeeder::class,
+            HallSeeder::class
 
         ]);
     }
